@@ -139,25 +139,32 @@ export const BackgroundManager: React.FC<BackgroundManagerProps> = ({
     style?: CSSProperties
   ) => {
     if (!url) return null
+
     return (
       <div
         key={keyVal || url}
-        className="fixed inset-0 z-0 w-full h-full transition-all duration-300"
+        className="fixed inset-0 z-0 w-full h-full transition-opacity duration-300 bg-black"
         style={{
-          backgroundColor: '#0b0b0b',
           opacity: videoReady ? 1 : 0,
           ...getMergedStyle(mode, false, style),
         }}
         aria-hidden="true"
       >
+        {/* Hidden preloader video (kept in DOM so browser loads it) */}
         {!videoReady && (
           <video
-            style={{ display: 'none' }}
+            style={{
+              position: 'absolute',
+              width: 0,
+              height: 0,
+              opacity: 0,
+            }}
             src={url}
             preload="auto"
             onCanPlayThrough={() => setVideoReady(true)}
           />
         )}
+
         {videoReady && (
           <video
             key={`bgvideo-${keyVal || url}`}
@@ -167,7 +174,7 @@ export const BackgroundManager: React.FC<BackgroundManagerProps> = ({
             loop
             muted
             playsInline
-            aria-hidden="true"
+            preload="auto"
           />
         )}
       </div>

@@ -4,9 +4,9 @@ const Logo = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 143 143"
-      width="64"
-      height="64"
+      viewBox="0 0 118 118"
+      width="70"
+      height="70"
     >
       <path d="M40 30 L50 30 L62 92 L52 92 Z" fill="black" />
 

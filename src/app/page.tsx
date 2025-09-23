@@ -40,7 +40,7 @@ const heroSection: Sec = {
 
 const verticalSections: Sec[] = [
   {
-    id: 3,
+    id: 1,
     title: 'Design + Development + Strategy',
     desc: "Why hire 3 different agencies when you can get world-class design, development, and business strategy all in one place? We're your complete digital partner.",
     bg: '/videos/bg3.mp4',
@@ -58,6 +58,15 @@ const verticalSections: Sec[] = [
     type: 'video',
   },
   {
+    id: 3,
+    title: 'Trusted by Industry Leaders',
+    desc: '"Working with Void feels like having a world-class team in-house. They understand business, not just code." — Marcus Rodriguez, CEO @ DataSync (Raised $5M Series A)',
+    bg: '/videos/bg4.mp4',
+    poster: '/images/bg7-poster.jpg',
+    mode: 'light',
+    type: 'video',
+  },
+  {
     id: 4,
     title: 'Real Results from Real Clients',
     desc: '"Void took our rough idea and turned it into a $2M business in 8 months. Their strategic thinking and flawless execution made all the difference." — Sarah Chen, Founder @ TechFlow',
@@ -66,20 +75,11 @@ const verticalSections: Sec[] = [
     mode: 'dark',
     type: 'video',
   },
-  {
-    id: 5,
-    title: 'Trusted by Industry Leaders',
-    desc: '"Working with Void feels like having a world-class team in-house. They understand business, not just code." — Marcus Rodriguez, CEO @ DataSync (Raised $5M Series A)',
-    bg: '/videos/bg4.mp4',
-    poster: '/images/bg7-poster.jpg',
-    mode: 'light',
-    type: 'video',
-  },
 ]
 
 const horizontalSlides: Sec[] = [
   {
-    id: 6,
+    id: 5,
     title: 'Our Recent Wins',
     desc: "See how we've transformed businesses across industries",
     bg: '/videos/bg7.mp4',
@@ -88,7 +88,7 @@ const horizontalSlides: Sec[] = [
     type: 'video',
   },
   {
-    id: 7,
+    id: 6,
     title: 'FinTech Success Story',
     desc: 'Built a trading platform that handles $50M in daily volume. 99.9% uptime, sub-100ms response times, and features that keep users trading 3x longer than competitors.',
     bg: '/videos/bg9.mp4',
@@ -97,7 +97,7 @@ const horizontalSlides: Sec[] = [
     type: 'video',
   },
   {
-    id: 8,
+    id: 7,
     title: 'E-commerce Revolution',
     desc: 'Redesigned and rebuilt an online store that increased conversion rates by 340% and average order value by $127. Now processing $100K monthly revenue.',
     bg: '/videos/bg1.mp4',
@@ -106,7 +106,7 @@ const horizontalSlides: Sec[] = [
     type: 'video',
   },
   {
-    id: 9,
+    id: 8,
     title: 'SaaS Platform Launch',
     desc: 'Took a startup from MVP to 1,000 paying customers in 4 months. Built scalable infrastructure that handles 10x growth without breaking a sweat.',
     bg: '/videos/bg5.mp4',
@@ -282,7 +282,7 @@ const VoidCreativeStudioWithBackground: React.FC = () => {
       />
 
       <div className="relative z-10">
-        <Header />
+        <Header mode={bgSections[currentIndex]?.mode} />
 
         <main
           ref={scrollableMainRef}
@@ -352,7 +352,7 @@ const VoidCreativeStudioWithBackground: React.FC = () => {
               >
                 <div className="relative z-20 max-w-5xl w-full">
                   <JelloCard
-                    className={`mx-auto px-8 py-16 md:py-20 rounded-3xl ${
+                    className={`text-center mx-auto px-8 py-16 md:py-20 rounded-3xl ${
                       sec.mode === 'light'
                         ? 'bg-white/5 text-black border border-white/10'
                         : 'bg-black/10 text-white border border-white/10'
@@ -373,10 +373,10 @@ const VoidCreativeStudioWithBackground: React.FC = () => {
           {/* Horizontal case-studies wrapper (logical snap stop) */}
           <section
             id="horizontal-section"
-            className="min-h-screen snap-start flex items-center justify-center px-6"
+            className="min-h-screen snap-start flex items-center justify-center py-28"
             onFocus={makeOnInView(bgSections.length - 1)}
           >
-            <div className="relative z-20 max-w-6xl w-full">
+            <div className="relative z-20 w-full">
               <div className="mb-6 text-right text-white/80">
                 {/* optional counter or controls */}
               </div>

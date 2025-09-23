@@ -6,7 +6,11 @@ import { motion, AnimatePresence, Variants } from 'framer-motion'
 import { Menu, X, Phone, User, Briefcase, Mail } from 'lucide-react'
 import Logo from './Logo'
 
-export default function Header(): JSX.Element {
+type HeaderProps = {
+  mode?: 'dark' | 'light'
+}
+
+export default function Header({ mode }: HeaderProps): JSX.Element {
   const [hidden, setHidden] = useState<boolean>(false)
   const [mobileOpen, setMobileOpen] = useState<boolean>(false)
   const [scrolled, setScrolled] = useState<boolean>(false)
@@ -96,7 +100,7 @@ export default function Header(): JSX.Element {
             }
           `}
         >
-          <div className="max-w-7xl mx-auto px-5 py-3">
+          <div className="max-w-7xl mx-auto px-4 py-2.5">
             <div className="flex items-center justify-between gap-4">
               {/* Logo */}
               <Link
@@ -104,7 +108,9 @@ export default function Header(): JSX.Element {
                 className="flex items-center gap-3 mr-2"
                 aria-label="Home"
               >
-                <div className="bg-white/10 backdrop-blur-sm rounded-full p-2 shadow-md">
+                <div
+                  className={`bg-white/10 backdrop-blur-sm rounded-full p-1 shadow-md`}
+                >
                   <Logo />
                 </div>
                 <div className="hidden sm:flex flex-col leading-tight">
@@ -125,8 +131,20 @@ export default function Header(): JSX.Element {
                     href={href}
                     className="group flex items-center gap-2 px-2 py-1 rounded-md transition-transform transform-gpu will-change-transform"
                   >
-                    <Icon className="w-4 h-4 text-white/70 group-hover:text-white transition-colors" />
-                    <span className="text-sm text-white/80 group-hover:text-white">
+                    <Icon
+                      className={`w-4 h-4 ${
+                        mode === 'dark'
+                          ? 'text-white/70 group-hover:text-white'
+                          : 'text-black/70 group-hover:text-black'
+                      } transition-colors`}
+                    />
+                    <span
+                      className={`text-sm ${
+                        mode === 'dark'
+                          ? 'text-white/80 group-hover:text-white'
+                          : 'text-black/80 group-hover:text-black'
+                      }`}
+                    >
                       {label}
                     </span>
                   </Link>
