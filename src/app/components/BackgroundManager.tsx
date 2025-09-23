@@ -21,11 +21,6 @@ interface BackgroundManagerProps {
   zIndex?: number
 }
 
-function getBgType(section?: Sec): 'image' | 'video' {
-  if (!section) return 'image'
-  return (section.type as 'image' | 'video') || 'image'
-}
-
 export const BackgroundManager: React.FC<BackgroundManagerProps> = ({
   sections,
   currentIndex,
@@ -44,7 +39,7 @@ export const BackgroundManager: React.FC<BackgroundManagerProps> = ({
   const rafRef = useRef<number | null>(null)
   const upKeyRef = useRef(0)
 
-  // Load current bg directly from section.bg
+  // Load current bg
   useEffect(() => {
     const s = sections[currentIndex]
     if (!s) return
@@ -52,7 +47,7 @@ export const BackgroundManager: React.FC<BackgroundManagerProps> = ({
     setVideoReady(false)
   }, [currentIndex, sections])
 
-  // Load prev bg when scrolling up
+  // Load previous bg for scroll-up overlay
   useEffect(() => {
     if (scroll.direction === 'up' && typeof scroll.prevIndex === 'number') {
       const s = sections[scroll.prevIndex]
@@ -62,12 +57,12 @@ export const BackgroundManager: React.FC<BackgroundManagerProps> = ({
     }
   }, [scroll.direction, scroll.prevIndex, sections])
 
-  // Increment key when scrolling up for overlay remount
+  // Increment overlay key on scroll up
   useEffect(() => {
     if (scroll.direction === 'up') upKeyRef.current += 1
   }, [scroll.direction, scroll.prevIndex])
 
-  // Overlay animation when scrolling up
+  // Scroll-up overlay animation
   useEffect(() => {
     if (scroll.direction !== 'up' || !overlayRef.current) return
     const overlayEl = overlayRef.current as HTMLElement
@@ -110,6 +105,8 @@ export const BackgroundManager: React.FC<BackgroundManagerProps> = ({
     [getBgStyle]
   )
 
+  // ---------- Video + Image renderers ----------
+
   const renderImageBg = (
     url: string,
     keyVal?: string,
@@ -117,15 +114,14 @@ export const BackgroundManager: React.FC<BackgroundManagerProps> = ({
     style?: CSSProperties
   ) => {
     if (!url) return null
-    const merged = getMergedStyle(mode, false, style)
     return (
       <div
         key={keyVal || url}
-        className="fixed inset-0 z-0 w-full h-full bg-cover bg-center transition-opacity duration-600"
+        className="fixed inset-0 w-full h-full bg-cover bg-center transition-opacity duration-600"
         style={{
           backgroundImage: `url(${url})`,
           backgroundColor: '#0b0b0b',
-          ...merged,
+          ...getMergedStyle(mode, false, style),
         }}
         aria-hidden="true"
       />
@@ -139,32 +135,27 @@ export const BackgroundManager: React.FC<BackgroundManagerProps> = ({
     style?: CSSProperties
   ) => {
     if (!url) return null
-
     return (
       <div
         key={keyVal || url}
-        className="fixed inset-0 z-0 w-full h-full transition-opacity duration-300 bg-black"
+        className="fixed inset-0 w-full h-full bg-black transition-opacity duration-300"
         style={{
           opacity: videoReady ? 1 : 0,
           ...getMergedStyle(mode, false, style),
         }}
         aria-hidden="true"
       >
-        {/* Hidden preloader video (kept in DOM so browser loads it) */}
+        {/* Hidden preloader */}
         {!videoReady && (
           <video
-            style={{
-              position: 'absolute',
-              width: 0,
-              height: 0,
-              opacity: 0,
-            }}
+            style={{ position: 'absolute', width: 0, height: 0, opacity: 0 }}
             src={url}
             preload="auto"
             onCanPlayThrough={() => setVideoReady(true)}
           />
         )}
 
+        {/* Visible video */}
         {videoReady && (
           <video
             key={`bgvideo-${keyVal || url}`}
@@ -187,11 +178,10 @@ export const BackgroundManager: React.FC<BackgroundManagerProps> = ({
     keyVal?: React.Key,
     mode?: Sec['mode'],
     style?: CSSProperties
-  ) => {
-    return type === 'image'
+  ) =>
+    type === 'image'
       ? renderImageBg(bgUrl, String(keyVal), mode, style)
       : renderVideoBg(bgUrl, String(keyVal), mode, style)
-  }
 
   const renderOverlay = (
     bgUrl: string,
@@ -207,7 +197,7 @@ export const BackgroundManager: React.FC<BackgroundManagerProps> = ({
         <div
           ref={ref as React.RefObject<HTMLDivElement>}
           key={keyVal}
-          className="absolute inset-0 z-10 w-full h-full bg-cover bg-center"
+          className="absolute inset-0 w-full h-full bg-cover bg-center z-10"
           style={{
             backgroundImage: bgUrl ? `url(${bgUrl})` : undefined,
             transform: 'translateY(0%)',
@@ -218,11 +208,12 @@ export const BackgroundManager: React.FC<BackgroundManagerProps> = ({
         />
       )
     }
+
     return (
       <video
         ref={ref as React.RefObject<HTMLVideoElement>}
         key={keyVal}
-        className="absolute inset-0 z-10 w-full h-full object-cover"
+        className="absolute inset-0 w-full h-full object-cover z-10"
         src={bgUrl || undefined}
         autoPlay
         loop
@@ -238,16 +229,18 @@ export const BackgroundManager: React.FC<BackgroundManagerProps> = ({
     )
   }
 
+  // ---------- Render main ----------
+
   if (scroll.direction === 'up') {
     return (
       <div
-        className="fixed inset-0 z-0 pointer-events-none"
-        aria-hidden="true"
+        className="fixed inset-0 pointer-events-none"
         style={{ zIndex }}
+        aria-hidden="true"
       >
         {renderBg(
           currentBg,
-          getBgType(sections[currentIndex]),
+          sections[currentIndex]?.type as 'image' | 'video',
           currentBg,
           currentSectionMode
         )}
@@ -257,7 +250,7 @@ export const BackgroundManager: React.FC<BackgroundManagerProps> = ({
         >
           {renderOverlay(
             prevBg,
-            getBgType(sections[scroll.prevIndex]),
+            sections[scroll.prevIndex]?.type as 'image' | 'video',
             overlayRef,
             `overlay-${upKeyRef.current}`,
             prevSectionMode
@@ -269,7 +262,7 @@ export const BackgroundManager: React.FC<BackgroundManagerProps> = ({
         >
           <BgDarken
             mode={currentSectionMode}
-            type={getBgType(sections[currentIndex])}
+            type={sections[currentIndex]?.type as 'image' | 'video'}
             currentSectionIndex={currentIndex}
             scrollContainerRef={
               scrollableMainRef as React.RefObject<HTMLElement>
@@ -282,13 +275,13 @@ export const BackgroundManager: React.FC<BackgroundManagerProps> = ({
 
   return (
     <div
-      className="fixed inset-0 z-0 pointer-events-none"
-      aria-hidden="true"
+      className="fixed inset-0 pointer-events-none"
       style={{ zIndex }}
+      aria-hidden="true"
     >
       {renderBg(
         currentBg,
-        getBgType(sections[currentIndex]),
+        sections[currentIndex]?.type as 'image' | 'video',
         currentBg,
         currentSectionMode
       )}
@@ -298,7 +291,7 @@ export const BackgroundManager: React.FC<BackgroundManagerProps> = ({
       >
         <BgDarken
           mode={currentSectionMode}
-          type={getBgType(sections[currentIndex])}
+          type={sections[currentIndex]?.type as 'image' | 'video'}
           currentSectionIndex={currentIndex}
           scrollContainerRef={scrollableMainRef as React.RefObject<HTMLElement>}
         />
