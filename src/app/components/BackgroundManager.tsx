@@ -43,7 +43,7 @@ export const BackgroundManager: React.FC<BackgroundManagerProps> = ({
   useEffect(() => {
     const s = sections[currentIndex]
     if (!s) return
-    setCurrentBg(s.bg || '')
+    setCurrentBg(s.bg ? (s.bg.startsWith('/') ? s.bg : '/' + s.bg) : '')
     setVideoReady(false)
   }, [currentIndex, sections])
 
@@ -51,7 +51,7 @@ export const BackgroundManager: React.FC<BackgroundManagerProps> = ({
   useEffect(() => {
     if (scroll.direction === 'up' && typeof scroll.prevIndex === 'number') {
       const s = sections[scroll.prevIndex]
-      setPrevBg(s?.bg || '')
+      setPrevBg(s?.bg ? (s.bg.startsWith('/') ? s.bg : '/' + s.bg) : '')
     } else {
       setPrevBg('')
     }
