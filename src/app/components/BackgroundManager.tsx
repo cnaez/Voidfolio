@@ -151,7 +151,7 @@ export const BackgroundManager: React.FC<BackgroundManagerProps> = ({
             style={{ position: 'absolute', width: 0, height: 0, opacity: 0 }}
             src={url}
             preload="auto"
-            onCanPlayThrough={() => setVideoReady(true)}
+            onLoadedData={() => setVideoReady(true)}
           />
         )}
 
@@ -166,6 +166,7 @@ export const BackgroundManager: React.FC<BackgroundManagerProps> = ({
             muted
             playsInline
             preload="auto"
+            poster="/images/bg4-poster.jpg" // optional, ensures fallback
           />
         )}
       </div>
