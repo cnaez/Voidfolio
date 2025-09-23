@@ -17,7 +17,7 @@ import { useIsMobile } from '../../hooks/useIsMobile'
 interface BackgroundManagerProps {
   sections: Sec[]
   currentIndex: number
-  scrollableMainRef?: React.RefObject<HTMLElement>
+  scrollableMainRef?: React.RefObject<HTMLElement | null>
   zIndex?: number
 }
 
@@ -189,7 +189,7 @@ export const BackgroundManager: React.FC<BackgroundManagerProps> = ({
   const renderOverlay = (
     bgUrl: string,
     type: 'image' | 'video',
-    ref: React.RefObject<HTMLElement>,
+    ref: React.RefObject<HTMLElement | null>,
     keyVal: React.Key,
     mode?: Sec['mode'],
     style?: CSSProperties

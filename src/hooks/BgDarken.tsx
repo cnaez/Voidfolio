@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { Sec } from '../types/section'
+import { Sec } from '../types/index'
 import throttle from 'lodash/throttle'
 
 interface BgDarkenProps {
   mode?: Sec['mode']
   zIndex?: number
   type?: 'image' | 'video'
-  scrollContainerRef: React.RefObject<HTMLElement>
-  currentSectionIndex: number // NEW: index of the current section
+  scrollContainerRef: React.RefObject<HTMLElement | null>
+  currentSectionIndex: number
 }
 
 function getOverlayGradient(mode?: Sec['mode']): string | undefined {

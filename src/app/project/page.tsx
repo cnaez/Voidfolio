@@ -3,25 +3,20 @@
 import React, { useState, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Head from 'next/head'
-import Image from 'next/image'
-import Link from 'next/link'
 import Header from '../components/Header'
 import {
   ExternalLink,
   Calendar,
   Users,
   TrendingUp,
-  Code,
-  Palette,
-  Smartphone,
   Globe,
   ShoppingCart,
   DollarSign,
   BarChart3,
   Zap,
   ArrowLeft,
-  Filter,
 } from 'lucide-react'
+import Link from 'next/link'
 
 interface Project {
   id: number
@@ -543,7 +538,7 @@ export default function Portfolio() {
               {selectedProject.testimonial && (
                 <div className="bg-gray-800 p-6 rounded-xl">
                   <blockquote className="text-gray-300 italic mb-4">
-                    "{selectedProject.testimonial.quote}"
+                    {selectedProject.testimonial.quote}
                   </blockquote>
                   <div className="text-white font-medium">
                     {selectedProject.testimonial.author}
@@ -606,8 +601,8 @@ export default function Portfolio() {
                 Our Work
               </h1>
               <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto mb-8">
-                Real projects, real results. See how we've transformed ideas
-                into profitable businesses.
+                Real projects, real results. See how we&apos;ve transformed
+                ideas into profitable businesses.
               </p>
 
               {/* Stats */}
@@ -685,24 +680,24 @@ export default function Portfolio() {
                 Ready to Join Our Success Stories?
               </h2>
               <p className="text-xl text-gray-300 mb-12 max-w-2xl mx-auto">
-                Let's transform your idea into the next profitable business.
-                Join 50+ successful founders who chose Void.
+                Let&apos;s transform your idea into the next profitable
+                business. Join 50+ successful founders who chose Void.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-6 items-center justify-center">
-                <a
-                  href="/start-project"
+                <Link
+                  href="/startProject"
                   className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-12 py-6 rounded-full font-bold text-xl shadow-lg hover:shadow-purple-500/25 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all duration-200 hover:scale-105"
                 >
                   Start Your Project
-                </a>
+                </Link>
 
-                <a
+                <Link
                   href="/#contact"
                   className="border-2 border-white/30 text-white px-10 py-5 rounded-full font-semibold text-lg hover:bg-white/10 hover:border-white/50 transition-all duration-200"
                 >
                   Get Free Consultation
-                </a>
+                </Link>
               </div>
             </motion.div>
           </div>

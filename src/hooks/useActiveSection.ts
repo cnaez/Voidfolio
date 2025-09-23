@@ -31,7 +31,7 @@ export function useActiveSection(sectionIds: string[]) {
     )
     els.forEach((el) => el && observer.observe(el))
     return () => observer.disconnect()
-  }, [sectionIds.join('|')])
+  }, [sectionIds])
 
   return activeIndex
 }

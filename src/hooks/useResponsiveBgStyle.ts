@@ -1,5 +1,5 @@
 import { useIsMobile } from './useIsMobile'
-import { Sec } from '../types/section'
+import { Sec } from '../types/index'
 
 type BreakpointKey = 'mobile' | 'md' | 'lg' | 'xl'
 

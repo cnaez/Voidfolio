@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, Variants } from 'framer-motion'
 import Head from 'next/head'
 import {
   ArrowRight,
@@ -97,8 +97,8 @@ export default function StartProject() {
     goals: '',
     currentSituation: '',
   })
-  const [currentStep, setCurrentStep] = useState(1)
-  const [showFAQ, setShowFAQ] = useState(false)
+  // const [currentStep, setCurrentStep] = useState(1)
+  const [showFAQ, setShowFAQ] = useState<number | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
 
@@ -114,7 +114,7 @@ export default function StartProject() {
   }
 
   const handleInputChange = (
-    e: React.TargetEvent<
+    e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
     >
   ) => {
@@ -124,7 +124,7 @@ export default function StartProject() {
     }))
   }
 
-  const fadeInUp = {
+  const fadeInUp: Variants = {
     hidden: { opacity: 0, y: 30 },
     visible: {
       opacity: 1,
@@ -133,7 +133,7 @@ export default function StartProject() {
     },
   }
 
-  const staggerContainer = {
+  const staggerContainer: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -166,7 +166,7 @@ export default function StartProject() {
             <ul className="text-left space-y-2 text-gray-300">
               <li className="flex items-center">
                 <CheckCircle className="w-4 h-4 text-green-400 mr-3" />
-                We'll analyze your requirements
+                We&apos;ll analyze your requirements
               </li>
               <li className="flex items-center">
                 <CheckCircle className="w-4 h-4 text-green-400 mr-3" />
@@ -207,7 +207,7 @@ export default function StartProject() {
         <div className="max-w-4xl mx-auto text-center relative z-10">
           <motion.div variants={fadeInUp} initial="hidden" animate="visible">
             <span className="inline-block bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-6 py-2 rounded-full text-sm font-semibold mb-6">
-              Let's Build Something Amazing
+              Let&apos;s Build Something Amazing
             </span>
           </motion.div>
 
@@ -226,8 +226,8 @@ export default function StartProject() {
             initial="hidden"
             animate="visible"
           >
-            Join 50+ successful founders who've transformed their ideas into
-            profitable businesses with our proven process.
+            Join 50+ successful founders who&apos;ve transformed their ideas
+            into profitable businesses with our proven process.
           </motion.p>
 
           {/* Trust Indicators */}
@@ -353,11 +353,11 @@ export default function StartProject() {
             viewport={{ once: true }}
           >
             <h2 className="text-3xl md:text-5xl font-bold mb-6">
-              Let's Discuss Your Project
+              Let&apos;s Discuss Your Project
             </h2>
             <p className="text-xl text-gray-300">
-              Fill out the form below and we'll get back to you within 24 hours
-              with a detailed proposal.
+              Fill out the form below and we&apos;ll get back to you within 24
+              hours with a detailed proposal.
             </p>
           </motion.div>
 
@@ -516,8 +516,8 @@ export default function StartProject() {
             </motion.button>
 
             <p className="text-center text-gray-400 text-sm mt-4">
-              We'll respond within 24 hours with a detailed proposal and next
-              steps.
+              We&apos;ll respond within 24 hours with a detailed proposal and
+              next steps.
             </p>
           </motion.form>
         </div>
@@ -575,7 +575,7 @@ export default function StartProject() {
                 </div>
 
                 <blockquote className="text-lg text-gray-300 italic">
-                  "{testimonial.quote}"
+                  {testimonial.quote}
                 </blockquote>
               </motion.div>
             ))}
@@ -688,7 +688,7 @@ export default function StartProject() {
               Ready to Transform Your Idea?
             </h2>
             <p className="text-xl text-gray-300 mb-12 max-w-2xl mx-auto">
-              Join the ranks of successful founders who've built profitable
+              Join the ranks of successful founders who&apos;ve built profitable
               businesses with our proven process.
             </p>
 

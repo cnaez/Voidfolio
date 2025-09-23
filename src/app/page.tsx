@@ -5,7 +5,6 @@ import React, { useEffect, useMemo, useRef, useState, useCallback } from 'react'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import BackgroundManager from './components/BackgroundManager' // your BackgroundManager
-import { useIsMobile } from '@/hooks/useIsMobile' // optional, used for rendering decisions
 
 /* ---------- dynamic imports (ssr: false) ---------- */
 const Header = dynamic(
@@ -16,12 +15,7 @@ const JelloCard = dynamic(
   () => import('./components/JelloCard').then((m) => m.JelloCard),
   { ssr: false }
 )
-const CallIcon = dynamic(
-  () => import('./components/CallIcon').then((m) => m.default),
-  { ssr: false }
-)
 
-/** ---------- Section data (copied/adapted from your original) ---------- */
 type Sec = {
   id: number | string
   title: string
@@ -169,7 +163,6 @@ function useContainerSectionObserver(
 
 /** ---------- Main page component (uses BackgroundManager + JelloCard) ---------- */
 const VoidCreativeStudioWithBackground: React.FC = () => {
-  const isMobile = useIsMobile()
   const scrollableMainRef = useRef<HTMLDivElement | null>(null)
 
   // Build the "sections" array used by BackgroundManager (hero + verticals + horizontal representative)
@@ -224,36 +217,38 @@ const VoidCreativeStudioWithBackground: React.FC = () => {
   useEffect(() => {
     const el = horizRef.current
     if (!el) return
+
     let pointerOver = false
+    let timer: number | null = null
 
     const onEnter = () => (pointerOver = true)
     const onLeave = () => (pointerOver = false)
 
     const onWheel = (e: WheelEvent) => {
       if (!pointerOver) return
+
       const deltaY = e.deltaY
       const maxLeft = el.scrollWidth - el.clientWidth
       const atLeft = el.scrollLeft <= 1
       const atRight = el.scrollLeft >= maxLeft - 1
 
-      // allow natural page scroll when at edges and continuing in that direction
-      if ((atLeft && deltaY < 0) || (atRight && deltaY > 0)) {
-        return
-      }
+      if ((atLeft && deltaY < 0) || (atRight && deltaY > 0)) return
 
-      // hijack wheel -> horizontal scroll while pointer over
       e.preventDefault()
       const multiplier = 1.6
       const raw =
         Math.sign(deltaY) * Math.min(900, Math.abs(deltaY) * multiplier)
       el.scrollBy({ left: raw, behavior: 'smooth' })
 
-      // update index after movement (debounced)
-      window.clearTimeout((onWheel as any)._timer)
-      ;(onWheel as any)._timer = window.setTimeout(() => {
-        const idx = Math.round(el.scrollLeft / el.clientWidth)
-        setCurrentIndex(bgSections.length - 1) // ensure background manager maps to horizontal section
-        ;(document.getElementById('horizontal-section') || el).focus?.()
+      // debounce
+      if (timer !== null) clearTimeout(timer)
+      timer = window.setTimeout(() => {
+        setCurrentIndex(Math.round(el.scrollLeft / el.clientWidth))
+
+        const focusEl = document.getElementById('horizontal-section') || el
+        if (focusEl && typeof focusEl.focus === 'function') {
+          focusEl.focus()
+        }
       }, 140)
     }
 
@@ -265,7 +260,7 @@ const VoidCreativeStudioWithBackground: React.FC = () => {
       el.removeEventListener('wheel', onWheel)
       el.removeEventListener('pointerenter', onEnter)
       el.removeEventListener('pointerleave', onLeave)
-      if ((onWheel as any)._timer) window.clearTimeout((onWheel as any)._timer)
+      if (timer !== null) clearTimeout(timer)
     }
   }, [bgSections.length])
 
@@ -333,7 +328,7 @@ const VoidCreativeStudioWithBackground: React.FC = () => {
 
               <div className="flex gap-4 justify-center">
                 <a
-                  href="/start-project"
+                  href="/startProject"
                   className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-8 py-3 rounded-full font-bold shadow-lg"
                 >
                   Start Your Project
@@ -412,7 +407,7 @@ const VoidCreativeStudioWithBackground: React.FC = () => {
                       </div>
                       <div className="mt-8 flex gap-4 justify-center">
                         <a
-                          href="/start-project"
+                          href="/startProject"
                           className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-6 py-3 rounded-full font-semibold"
                         >
                           Claim Strategy Call
