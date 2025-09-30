@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Sec } from '../types/index'
+import { Sec } from '@/types/index'
 import throttle from 'lodash/throttle'
 
 interface BgDarkenProps {

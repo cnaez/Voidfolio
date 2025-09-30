@@ -3,7 +3,6 @@ export type Sec = {
   title: string
   desc: string | React.ReactNode
   bg?: string
-  poster?: string
   mode?: 'dark' | 'light'
   type?: 'image' | 'video'
   horizontal?: boolean

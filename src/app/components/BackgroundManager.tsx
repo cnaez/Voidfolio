@@ -7,12 +7,12 @@ import React, {
   useState,
   CSSProperties,
 } from 'react'
-import { BgDarken } from '../../hooks/BgDarken'
-import { Sec } from '../../types/index'
-import { useResponsiveBgStyle } from '../../hooks/useResponsiveBgStyle'
-import { usePreloadBackgrounds } from '../../hooks/usePreloadBackgrounds'
-import { useScrollDirection } from '../../hooks/useScrollDirection'
-import { useIsMobile } from '../../hooks/useIsMobile'
+import { BgDarken } from '../hooks/BgDarken'
+import { Sec } from '@/types/index'
+import { useResponsiveBgStyle } from '../hooks/useResponsiveBgStyle'
+import { usePreloadBackgrounds } from '../hooks/usePreloadBackgrounds'
+import { useScrollDirection } from '../hooks/useScrollDirection'
+import { useIsMobile } from '../hooks/useIsMobile'
 
 interface BackgroundManagerProps {
   sections: Sec[]
@@ -146,22 +146,24 @@ export const BackgroundManager: React.FC<BackgroundManagerProps> = ({
     return (
       <div
         key={keyVal || url}
-        className="fixed inset-0 w-full h-full bg-black transition-opacity duration-300"
+        className="fixed inset-0 w-full h-full transition-opacity duration-300"
         style={{
-          opacity: videoReady ? 1 : 0,
+          backgroundColor: '#000', // always fallback to black
+          opacity: videoReady ? 1 : 1, // keep wrapper visible
           ...getMergedStyle(mode, false, style),
         }}
         aria-hidden="true"
       >
+        {/* If not ready → just render black background */}
+        {!videoReady && <div className="absolute inset-0 bg-black" />}
+
         {/* Hidden preloader */}
-        {!videoReady && (
-          <video
-            style={{ position: 'absolute', width: 0, height: 0, opacity: 0 }}
-            src={url}
-            preload="auto"
-            onCanPlayThrough={() => setVideoReady(true)}
-          />
-        )}
+        <video
+          style={{ position: 'absolute', width: 0, height: 0, opacity: 0 }}
+          src={url}
+          preload="auto"
+          onCanPlayThrough={() => setVideoReady(true)}
+        />
 
         {/* Visible video */}
         {videoReady && (

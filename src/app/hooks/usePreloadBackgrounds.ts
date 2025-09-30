@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { Sec } from '../types/index'
+import { Sec } from '@/types/index'
 
 export function usePreloadBackgrounds({
   sections,
@@ -35,10 +35,10 @@ export function usePreloadBackgrounds({
         video.preload = 'auto'
       }
 
-      if (section.poster) {
-        const posterImg = new Image()
-        posterImg.src = section.poster
-      }
+      // if (section.poster) {
+      //   const posterImg = new Image()
+      //   posterImg.src = section.poster
+      // }
     })
   }, [sections, currentIndex, isMobile])
 }
