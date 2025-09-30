@@ -39,11 +39,19 @@ export const BackgroundManager: React.FC<BackgroundManagerProps> = ({
   const rafRef = useRef<number | null>(null)
   const upKeyRef = useRef(0)
 
+  const getBlobUrl = (path?: string) => {
+    if (!path) return ''
+    // If already an absolute URL (starts with http/https), just return it
+    if (/^https?:\/\//.test(path)) return path
+    // Fallback: keep relative (for dev/local if needed)
+    return path
+  }
+
   // Load current bg
   useEffect(() => {
     const s = sections[currentIndex]
     if (!s) return
-    setCurrentBg(s.bg ? (s.bg.startsWith('/') ? s.bg : '/' + s.bg) : '')
+    setCurrentBg(getBlobUrl(s.bg))
     setVideoReady(false)
   }, [currentIndex, sections])
 
@@ -51,7 +59,7 @@ export const BackgroundManager: React.FC<BackgroundManagerProps> = ({
   useEffect(() => {
     if (scroll.direction === 'up' && typeof scroll.prevIndex === 'number') {
       const s = sections[scroll.prevIndex]
-      setPrevBg(s?.bg ? (s.bg.startsWith('/') ? s.bg : '/' + s.bg) : '')
+      setPrevBg(getBlobUrl(s?.bg))
     } else {
       setPrevBg('')
     }
@@ -151,7 +159,7 @@ export const BackgroundManager: React.FC<BackgroundManagerProps> = ({
             style={{ position: 'absolute', width: 0, height: 0, opacity: 0 }}
             src={url}
             preload="auto"
-            onLoadedData={() => setVideoReady(true)}
+            onCanPlayThrough={() => setVideoReady(true)}
           />
         )}
 
@@ -166,7 +174,6 @@ export const BackgroundManager: React.FC<BackgroundManagerProps> = ({
             muted
             playsInline
             preload="auto"
-            poster="/images/bg4-poster.jpg" // optional, ensures fallback
           />
         )}
       </div>

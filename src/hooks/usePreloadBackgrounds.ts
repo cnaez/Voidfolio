@@ -13,24 +13,28 @@ export function usePreloadBackgrounds({
   useEffect(() => {
     const indicesToPreload = [currentIndex, currentIndex + 1, currentIndex - 1]
 
+    const getKVUrl = (path?: string) => {
+      if (!path) return ''
+      if (path.startsWith('/api/video/')) return path
+      const filename = path.split('/').pop()
+      return filename ? `/api/video/${filename}` : path
+    }
+
     indicesToPreload.forEach((idx) => {
       const section = sections[idx]
       if (!section) return
 
       if (section.type === 'image' && section.bg) {
-        // preload image
         const img = new Image()
-        img.src = section.bg
+        img.src = section.bg.startsWith('/api/video/') ? section.bg : section.bg
       }
 
       if (section.type === 'video' && section.bg) {
-        // preload video
         const video = document.createElement('video')
-        video.src = section.bg
+        video.src = getKVUrl(section.bg)
         video.preload = 'auto'
       }
 
-      // optionally preload poster for videos
       if (section.poster) {
         const posterImg = new Image()
         posterImg.src = section.poster
