@@ -1,22 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Henny+Penny&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Edu+NSW+ACT+Hand+Pre:wght@400..700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@200..800&display=swap');
-@import "tailwindcss";
+@import 'tailwindcss';
 
 * {
   cursor: none !important;
 }
-
 
 :root {
   --background: #ffffff;
   --foreground: #171717;
   --font-main: 'Inter', sans-serif;
   --font-heading: 'Space Grotesk', sans-serif;
-  --font-casual: 'Edu NSW ACT Hand Pre', sans-serif;
-  --font-logo: 'Henny Penny', sans-serif;
 }
 
 @theme inline {
@@ -24,8 +18,6 @@
   --color-foreground: var(--foreground);
   --font-main: var(--font-main);
   --font-heading: var(--font-heading);
-  --font-casual: var(--font-casual);
-  --font-logo: var(--font-logo);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -46,8 +38,12 @@ h2 {
 }
 
 .cardShadow {
-  box-shadow: inset 0px 1px 1px 0px rgba(255, 255, 255, 0.25), inset 0px -1px 2px 0px rgba(255, 255, 255, 0.25);
+  box-shadow: inset 0px 1px 1px 0px rgba(255, 255, 255, 0.25),
+    inset 0px -1px 2px 0px rgba(255, 255, 255, 0.25);
 }
 
-.scroll-x-container { overscroll-behavior: contain;scroll-snap-type: x mandatory;
-scroll-behavior: smooth; }
+.scroll-x-container {
+  overscroll-behavior: contain;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+}
